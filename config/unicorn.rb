@@ -1,23 +1,8 @@
-APP_ROOT = "/data/hubspot"
-
-worker_processes 3
-working_directory APP_ROOT + "/current"
-
-timeout 180
-
-listen APP_ROOT + "/shared/sockets/unicorn.sock", :backlog => 1024
-
-pid APP_ROOT + "/shared/pids/unicorn.pid"
-
-stderr_path APP_ROOT + "/shared/log/unicorn.stderr.log"
-
+worker_processes ENV.fetch('WORKER_PROCESSES', 3).to_i
+timeout ENV.fetch('TIMEOUT', 240).to_i
 preload_app true
 
 GC.respond_to?(:copy_on_write_friendly=) and  GC.copy_on_write_friendly = true
-
-before_exec do |server|
-  ENV["BUNDLE_GEMFILE"] = APP_ROOT + "/current/Gemfile"
-end
 
 before_fork do |server, worker|
   defined?(ActiveRecord::Base) and ActiveRecord::Base.connection.disconnect!
@@ -31,12 +16,10 @@ before_fork do |server, worker|
     rescue Errno::ENOENT, Errno::ESRCH
     end
   end
-
   sleep 1
 end
 
 after_fork do |server, worker|
   defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
-
   defined?(Rails) and Rails.cache.respond_to?(:reconnect) and Rails.cache.reconnect
 end

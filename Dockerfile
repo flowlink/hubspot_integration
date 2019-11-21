@@ -1,9 +1,7 @@
-FROM rlister/ruby:2.1.5
-MAINTAINER Ric Lister, ric@spreecommerce.com
+FROM nurelmdevelopment/ruby-base-image
+MAINTAINER Joaquin Perez, joaquin@nurelm.com
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get install -yq \
+RUN apt-get update && apt-get install -y \
     build-essential zlib1g-dev libreadline6-dev libyaml-dev libssl-dev \
     locales \
     git
@@ -14,16 +12,19 @@ RUN dpkg-reconfigure locales && \
     /usr/sbin/update-locale LANG=C.UTF-8
 ENV LC_ALL C.UTF-8
 
-WORKDIR /app
+RUN gem install bundler --no-rdoc --no-ri
 
 ## help docker cache bundle
-ADD ./Gemfile /app/
-ADD ./Gemfile.lock /app/
-RUN bundle install --without development test
+WORKDIR /tmp
+ADD ./Gemfile /tmp/
+# ADD ./Gemfile.lock /tmp/
+RUN bundle install
+RUN rm -f /tmp/Gemfile /tmp/Gemfile.lock
 
+WORKDIR /app
 ADD ./ /app
 
 EXPOSE 5000
 
 ENTRYPOINT [ "bundle", "exec" ]
-CMD [ "unicorn", "-p", "5000", "-c", "config/unicorn.rb" ]
+CMD [ "foreman", "start" ]

@@ -17,7 +17,7 @@ RUN gem install bundler --no-rdoc --no-ri
 ## help docker cache bundle
 WORKDIR /tmp
 ADD ./Gemfile /tmp/
-# ADD ./Gemfile.lock /tmp/
+ADD ./Gemfile.lock /tmp/
 RUN bundle install
 RUN rm -f /tmp/Gemfile /tmp/Gemfile.lock
 

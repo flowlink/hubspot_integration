@@ -15,7 +15,6 @@ group :test do
   gem 'terminal-notifier-guard'
   gem 'rb-fsevent', '~> 0.9.1'
   gem 'rack-test'
-  gem 'hub_samples', github: 'spree/hub_samples', require: 'hub/samples'
 end
 
 group :development do

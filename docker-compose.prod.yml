@@ -1,0 +1,13 @@
+version: '3'
+services:
+  hubspot-integration:
+    container_name: hubspot-integration
+    network_mode: bridge
+    environment:
+      - VIRTUAL_HOST=hubspot_integration.flowlink.io
+    build: .
+    volumes:
+      - .:/app
+    restart: always
+    logging:
+      driver: gcplogs

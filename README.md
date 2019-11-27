@@ -1,16 +1,14 @@
 # HubSpot Endpoint
 
-This is an endpoint application for the Spree Commerce hub. You can read more about the hub at http://guides.spreecommerce.com/integration/ .
-
 The HubSpot endpoint takes incoming order messages with the "order:new", "order:update", or "order:cancel" type and either creates a new HubSpot contact, or finds and updates the existing contact.
 
 ## Authentication
 
-This endpoint uses the OAuth authentication approach, which allows you to make public your data without sharing your login credentials. This access is managed with a `hubspot.access_token` and a `hubspot.refresh_token`, both of which are configuration parameters for this integration. 
+This endpoint uses the OAuth authentication approach, which allows you to make public your data without sharing your login credentials. This access is managed with a `hubspot.access_token` and a `hubspot.refresh_token`, both of which are configuration parameters for this integration.
 
 ### HubSpot Configuration Requirements
 
-Configuration parameters for this integration include: 
+Configuration parameters for this integration include:
 
 | Name | Value | Example |
 | :----| :-----| :------ |
@@ -20,6 +18,12 @@ Configuration parameters for this integration include:
 Your access token is generated via the API Access section of your HubSpot administration area. You need to use an authorization URL to grant permission to the Hub to access and modify your HubSpot account data, which will also generate a refresh token. Contact Spree Commerce technical support to complete this process.
 
 Once your refresh token has been created, the Hub will use it to automatically update your access token once it expires, as HubSpot tokens are only good for 8 hours.
+
+### Starting Application
+
+* Install [Docker](https://docs.docker.com/v17.09/engine/installation/) and [Docker-Compose](https://docs.docker.com/compose/install/)
+
+* Run `scripts/run_local.sh` for local work
 
 ## Services
 

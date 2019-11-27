@@ -1,0 +1,7 @@
+version: "3"
+services:
+  hubspot-integration:
+    ports:
+      - '3001:5000'
+    volumes:
+      - ${PWD}:/app

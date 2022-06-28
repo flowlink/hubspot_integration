@@ -4,7 +4,7 @@ gem 'httparty'
 gem 'sinatra'
 gem 'tilt-jbuilder', require: 'sinatra/jbuilder'
 gem 'endpoint_base', github: 'flowlink/endpoint_base'
-gem 'unicorn'
+gem 'puma'
 
 group :test do
   gem 'simplecov', :require => false, :group => :test
@@ -13,7 +13,7 @@ group :test do
   gem 'rspec'
   gem 'guard-rspec'
   gem 'terminal-notifier-guard'
-  gem 'rb-fsevent', '~> 0.9.1'
+  gem 'rb-fsevent'
   gem 'rack-test'
 end
 

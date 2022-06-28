@@ -1,30 +1,15 @@
-FROM nurelmdevelopment/ruby-base-image
-MAINTAINER Joaquin Perez, joaquin@nurelm.com
+FROM ruby:2.7-alpine
+LABEL maintainer="NuRelm <development@nurelm.com>"
 
-RUN apt-get update && apt-get install -y \
-    build-essential zlib1g-dev libreadline6-dev libyaml-dev libssl-dev \
-    locales \
-    git
-
-## set the locale so gems built for utf8
-RUN dpkg-reconfigure locales && \
-    locale-gen C.UTF-8 && \
-    /usr/sbin/update-locale LANG=C.UTF-8
-ENV LC_ALL C.UTF-8
-
-RUN gem install bundler --no-rdoc --no-ri
-
-## help docker cache bundle
-WORKDIR /tmp
-ADD ./Gemfile /tmp/
-ADD ./Gemfile.lock /tmp/
-RUN bundle install
-RUN rm -f /tmp/Gemfile /tmp/Gemfile.lock
+RUN apk add --no-cache --update build-base libcurl linux-headers git shared-mime-info tzdata
 
 WORKDIR /app
-ADD ./ /app
+COPY ./ /app
 
-EXPOSE 5000
+RUN bundle install --jobs 5
+
+ARG DEVELOPMENT
+RUN if [ -z $DEVELOPMENT ] ; then apk del build-base linux-headers ; fi
 
 ENTRYPOINT [ "bundle", "exec" ]
 CMD [ "foreman", "start" ]
